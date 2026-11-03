@@ -208,7 +208,7 @@ impl Workspace {
         let first = self.size.0 == 0.;
         self.size = (w, h);
         let positions = [
-            rect(278., h - 380., 511., 247.),
+            rect(232., h - 300., 820., 260.),
             if self.piano_maximized {
                 rect(209., 82., w - 209., h - 82.)
             } else {
@@ -251,4 +251,8 @@ impl Arrangement {
     pub(crate) fn y_at(self, lane: usize) -> f64 {
         self.grid.origin.y + (lane as f64 - self.first_row) * 48.
     }
+}
+
+pub(crate) fn step_width(panel: Rect) -> f64 {
+    ((panel.size.width - 245.) / 16.).max(8.)
 }

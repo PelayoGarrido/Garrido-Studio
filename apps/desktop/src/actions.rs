@@ -63,7 +63,7 @@ Record opens input only when pressed.",
             9352 => self.message(
                 "Garrido Studio",
                 "Pelayo Garrido Martínez
-Independent Rust audio workstation · local prealpha
+Independent Rust audio workstation
 PolyForm Noncommercial + commercial music permission.
 Cuprum: SIL OFL 1.1 · Tabler Icons: MIT.",
             ),
@@ -76,7 +76,7 @@ Cuprum: SIL OFL 1.1 · Tabler Icons: MIT.",
                     .enumerate()
                     .map(|(i, p)| (p.name.clone(), 7000 + i as isize))
                     .collect();
-                self.popup(items, Point { x: 851., y: 79. });
+                self.popup(items, Point { x: 440., y: 79. });
             }
             7000..=7255 => {
                 self.select_pattern((tag - 7000) as usize);
@@ -88,7 +88,7 @@ Cuprum: SIL OFL 1.1 · Tabler Icons: MIT.",
                     ("Beat".into(), 9033),
                     ("Bar".into(), 9034),
                 ],
-                Point { x: 746., y: 79. },
+                Point { x: 1380., y: 79. },
             ),
             9031..=9034 => self
                 .workspace

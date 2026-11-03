@@ -1,0 +1,58 @@
+name: Product website
+on:
+  workflow_run:
+    workflows: ['Desktop checks and releases']
+    types: [completed]
+permissions:
+  contents: read
+concurrency:
+  group: product-website
+  cancel-in-progress: false
+jobs:
+  deploy:
+    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push' && github.event.workflow_run.head_repository.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.workflow_run.head_sha }}
+      - name: Require the published release for this exact source
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python - <<'PYTHON'
+          import json
+          import os
+          import re
+          import subprocess
+          import tomllib
+          import urllib.request
+          from pathlib import Path
+          version = tomllib.loads(Path('Cargo.toml').read_text())['package']['version']
+          if not re.fullmatch(r'[0-9]+\.[0-9]+\.[0-9]+', version):
+              raise SystemExit('Invalid release version')
+          url = 'https://api.github.com/repos/PelayoGarrido/Garrido-Studio/releases/tags/v' + version
+          request = urllib.request.Request(url, headers={'Authorization': 'Bearer ' + os.environ['GH_TOKEN'], 'Accept': 'application/vnd.github+json'})
+          with urllib.request.urlopen(request, timeout=30) as response:
+              release = json.load(response)
+          source = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
+          if release.get('draft') is not False or release.get('prerelease') is not False or release.get('target_commitish') != source:
+              raise SystemExit('Published release does not match this source')
+          PYTHON
+      - name: Check website assets and public content
+        run: python tools/web_check.py
+      - uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9
+        with:
+          path: web/public
+      - uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346
+        id: deployment

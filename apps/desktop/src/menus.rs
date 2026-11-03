@@ -387,14 +387,10 @@ impl Studio {
                 ("Load WAV…", 8),
             ],
         };
-        let x = match tag {
-            2000 => 4.,
-            2001 => 32.,
-            2002 => 85.,
-            2003 => 139.,
-            2004 => 171.,
-            _ => 222.,
-        };
+        let x = crate::controls::controls()
+            .iter()
+            .find(|control| control.tag == tag)
+            .map_or(16., |control| control.r.origin.x);
         self.popup(
             items.into_iter().map(|(s, t)| (s.to_owned(), t)).collect(),
             Point { x, y: 79. },

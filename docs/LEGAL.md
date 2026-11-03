@@ -30,6 +30,10 @@ The reference's Cuprum 1.001 font was downloaded into ignored research output fo
 
 Close visual matching is not a legal opinion on copyright, design rights or trade dress. A small visual change alone would not authorize copying protected artwork or GPL code. This independent-source record does not establish clearance to distribute an identical visual presentation. Review those rights before publication or commercial licensing, in addition to the functional release gate.
 
+## Visual revision 1.1
+
+The current shared desktop defines a Garrido Studio transport/header, named view navigation, three functional library tabs, native window chrome and a wider proportional step sequencer. Earlier comparison records and Git history are retained. These changes reduce the direct visual reconstruction; they do not establish copyright, design or trademark clearance. The implementation provenance, third-party notices and the distinction between source availability and OSI open source remain unchanged.
+
 ## Before publication
 
 1. Match release claims to executable evidence; retain the current boundaries and contribution roadmap in PARITY.md and CONTRIBUTING.md.

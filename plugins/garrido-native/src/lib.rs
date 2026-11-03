@@ -30,7 +30,7 @@ macro_rules! descriptor {
             url: c"https://github.com/PelayoGarrido".as_ptr(),
             manual_url: c"".as_ptr(),
             support_url: c"".as_ptr(),
-            plugin_version: c"1.0.0".as_ptr(),
+            plugin_version: c"1.1.0".as_ptr(),
             description: c"Original Rust DSP".as_ptr(),
             features: $features.0.as_ptr(),
         }

@@ -76,7 +76,7 @@ fn main() -> eframe::Result {
         viewport: eframe::egui::ViewportBuilder::default()
             .with_inner_size([1280., 720.])
             .with_min_inner_size([1024., 576.])
-            .with_decorations(false)
+            .with_decorations(true)
             .with_icon(std::sync::Arc::new(brand::window_icon()))
             .with_app_id("studio.garrido.GarridoStudio"),
         renderer: eframe::Renderer::Wgpu,

@@ -1,3 +1,9 @@
+# Workspace evolution
+
+Version 1.1 replaces the reconstructed transport presentation with Garrido Studio’s own header, grouped playback controls, named view tabs and native window chrome. The library uses three labelled functional tabs; the wider step sequencer shares its proportional geometry between drawing and hit-testing. Menu anchors follow the actual control positions. The approved logo and palette remain unchanged.
+
+The record below describes the earlier comparison work. It is retained for provenance and is not the current design specification or a legal clearance.
+
 # Reference UI reconstruction · 2026-10-28
 
 Target: the owner's two supplied Lemon Studio screenshots, from revision `a6ce2dd443d75abf424a50fb5dd68526f87bed9d`. The previous merely similar workspace was replaced with independently written Rust/AppKit drawing and gestures. The application starts with an empty sampler/pattern, matching the reference's initial workspace. Branding remains Garrido Studio.

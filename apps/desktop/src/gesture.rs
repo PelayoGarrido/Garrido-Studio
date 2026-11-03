@@ -122,10 +122,6 @@ impl Studio {
     }
     pub(crate) fn mouse(&mut self, event: Input, right: bool) {
         let p = event.point;
-        if p.y < 40. && ((p.x >= 73. && p.x < 378.) || p.x > 1470.) && !right {
-            self.window_drag = true;
-            return;
-        }
         for i in self.workspace.order.clone().into_iter().rev() {
             let panel = self.workspace.panels[i];
             if !panel.visible || !inside(panel.rect, p) {
@@ -216,7 +212,9 @@ impl Studio {
                             Ok(())
                         })
                     } else if p.x >= r.origin.x + 229. {
-                        let step = ((p.x - r.origin.x - 229.) / 16.).floor().clamp(0., 15.) as u32;
+                        let step = ((p.x - r.origin.x - 229.) / workspace::step_width(r))
+                            .floor()
+                            .clamp(0., 15.) as u32;
                         let Some(pattern) = self.pattern() else {
                             return;
                         };

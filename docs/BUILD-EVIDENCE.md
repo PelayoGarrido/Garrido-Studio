@@ -2,6 +2,16 @@
 
 This ledger retains historical checks and records the v1 release scope separately from full reference parity. Current capabilities and further work are in README.md, CONTRIBUTING.md and PARITY.md. Historical failures and earlier executable hashes remain attached to their original evidence.
 
+## Workspace identity and website · 2026-11-03
+
+The 1.1.0 local checks pass **129 core/plugin tests**, **33 optimized common-desktop tests**, sixteen Python security/publication checks, formatting and strict Clippy. Registry package versions and checksums are unchanged from the corrected 1.0.0 release; only owned package versions and the associated inventory fingerprint changed. The first/last step and undo regression exercises the wider sequencer through actual pointer coordinates.
+
+A separate macOS preview instance opened the included Primer pulso session without closing the existing application. Visual review found an audio-tool label incorrectly overlapping the logo; restricting header drawing to its own toolbar controls fixed it. The corrected executable SHA256 is `6019697f4debb06c78bde293ac1b6a49c8035dd949bec552a9c94d41adf04072`; its ad-hoc signature and all fourteen packaged plugin descriptors pass. The README and website use a direct capture of that executable. No audible playback or microphone was opened during this visual check.
+
+The static product site uses the approved original logo and an existing engine render. Its asset check covers local references, document IDs, keyboard-tab targets, CSP, explicit audio controls, a 20 MiB budget and private-path exclusion. Browser checks cover the mobile layout, navigation, workflow keyboard controls and FAQ. It has no backend, analytics, external fonts or frontend dependencies. Publication is a separate GitHub Pages workflow that requires a successful native release workflow and a published release matching the exact source SHA. The existing main-only Pages environment protection is retained.
+
+The original v1.0.0 native release run [41575375907](https://github.com/PelayoGarrido/Garrido-Studio/actions/runs/41575375907) passed all three native jobs, security review and release publication for `4bc0f0e89853b84c1bfcbdfeea3d7717ca8fe670`. That tag and all prior provenance remain intact. The 1.1.0 native run and website publication are verified separately after this source is committed; local evidence alone does not establish their result or physical audio acceptance.
+
 ## Native CI follow-up · 2026-11-03
 
 [Run 41573613175](https://github.com/PelayoGarrido/Garrido-Studio/actions/runs/41573613175), source revision `deccfa828455fec9c1ea96dd4340d86551bff8e2`, passed all three native desktop jobs: macOS arm64, Windows x64 and Ubuntu 24.04 x64. Each job completed core and editor checks, optimized builds, all fourteen included-plugin diagnostics and archive readback. These checks do not establish real recording-device or long-session musical acceptance.

@@ -25,7 +25,7 @@ La G une fruta, hojas y nota musical. El material es vidrio translúcido, con re
 
 ## Aplicación
 
-El estudio arranca siempre en modo oscuro por defecto. No sigue automáticamente el tema claro del sistema operativo. El usuario puede activar el modo claro desde OPTIONS → Light theme y volver con Dark theme. El cambio visual no modifica la música, el historial ni los archivos. La elección se aplica a la sesión abierta; su persistencia entre arranques sigue pendiente.
+El estudio arranca siempre en modo oscuro por defecto. No sigue automáticamente el tema claro del sistema operativo. El usuario puede activar el modo claro desde OPTIONS → Light theme y volver con Dark theme. El cambio visual no modifica la música, el historial ni los archivos. La elección se guarda como preferencia explícita entre arranques.
 
 Se conserva la estructura de trabajo de referencia: transporte, navegador, selector, arreglo y editores flotantes. La paleta y el logo aprobados sustituyen la identidad amarilla anterior. El plano de trabajo permanece sobrio y legible: los reflejos y el vidrio tienen más presencia en la marca y las presentaciones que en las rejillas de edición.
 
@@ -38,3 +38,7 @@ Fondos blancos o perla, espacio amplio, tipografía ciruela y acentos coral, ros
 Las capturas del producto deben proceder de la aplicación real. El moodboard no demuestra funciones terminadas ni disponibilidad en Windows/Linux. Las piezas de lanzamiento no deben anunciar descarga, latencia, compatibilidad de plugins, grabación o paridad completa hasta que exista evidencia.
 
 La designación del logo como oficial procede del usuario. Este registro conserva esa decisión y no sustituye una revisión de derechos o de marcas.
+
+## Espacio de trabajo 1.1
+
+La revisión 1.1 usa controles de ventana nativos, una cabecera con la marca a la izquierda, transporte agrupado y vistas con nombre. La biblioteca muestra tres pestañas funcionales y el secuenciador usa celdas proporcionales al ancho de su panel. Los registros de la comparación inicial se conservan como historia del proyecto. Estos cambios no constituyen una certificación jurídica.

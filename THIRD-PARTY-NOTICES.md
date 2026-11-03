@@ -16,7 +16,7 @@ Python, pnpm, Cargo, rustfmt, Clippy, Xcode command line tools and iconutil are 
 
 ## Common desktop application
 
-The common UI is an internal preview in `apps/desktop`, with a separate checked-in lockfile. It uses eframe/egui 0.37.0 (MIT OR Apache-2.0), CPAL 0.18.2 (Apache-2.0), rfd 0.17.2 (MIT) and fs4 1.1.0 (MIT OR Apache-2.0). The audio engine and DSP remain implemented here. The transitive copyright/license collection is in [legal/desktop-dependencies](legal/desktop-dependencies/inventory.json). All-platform acceptance, maintenance review and the complete publication gate remain required. See docs/DEPENDENCIES.md. A registry checksum is an integrity check, not a security audit or license clearance.
+The common desktop UI is in `apps/desktop`, with a separate checked-in lockfile. It uses eframe/egui 0.37.0 (MIT OR Apache-2.0), CPAL 0.18.2 (Apache-2.0), rfd 0.17.2 (MIT) and fs4 1.1.0 (MIT OR Apache-2.0). The audio engine and DSP remain implemented here. The transitive copyright/license collection is in [legal/desktop-dependencies](legal/desktop-dependencies/inventory.json). Native build/test evidence and physical-device acceptance are documented separately; maintenance review remains required. See docs/DEPENDENCIES.md. A registry checksum is an integrity check, not a security audit or license clearance.
 
 
 The experimental Windows cross build also links the verified Zig 0.17.0 compiler runtime, MinGW CRT components and LLVM libunwind. Their notices and provenance are in `legal/windows-runtime/`; musl-derived math attribution is retained there. These components retain their permissive upstream permissions. The application license does not replace them. This development cross build is distinct from the normal native Windows/MSVC build.

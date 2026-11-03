@@ -227,7 +227,7 @@ impl Studio {
         self.height = area.height() as f64 / self.scale;
         self.workspace.layout(self.width, self.height);
         let c = Canvas::new(ui.painter().clone(), area.min, self.scale, self.theme);
-        self.draw_reference(&c);
+        self.draw_workspace(&c);
         let response = ui.interact(
             area,
             egui::Id::unique("studio-workspace"),
@@ -428,6 +428,28 @@ mod tests {
         );
     }
     #[test]
+    fn wide_step_sequencer_hits_the_first_and_last_steps_and_undoes_cleanly() {
+        let mut s = studio();
+        frame(&mut s, vec![]);
+        let panel = s.workspace.panels[0].rect;
+        let width = crate::workspace::step_width(panel);
+        for step in [0, 15] {
+            click(
+                &mut s,
+                (panel.origin.x + 229. + (step as f64 + 0.5) * width) as f32,
+                (panel.origin.y + 60.) as f32,
+            );
+        }
+        let notes = &s.history.project.patterns[0].notes;
+        assert_eq!(notes.len(), 2);
+        assert_eq!(notes[0].tick, 0);
+        assert_eq!(notes[1].tick, 15 * PPQ / 4);
+        s.action(6);
+        assert_eq!(s.history.project.patterns[0].notes.len(), 1);
+        s.action(6);
+        assert!(s.history.project.patterns[0].notes.is_empty());
+    }
+    #[test]
     fn playlist_shortcuts_edit_clips_without_deleting_pattern_notes() {
         let mut s = studio();
         frame(&mut s, vec![]);
@@ -550,7 +572,7 @@ mod tests {
     fn toolbar_focus_does_not_block_undo_shortcut() {
         let mut s = studio();
         frame(&mut s, vec![]);
-        click(&mut s, 561., 10.);
+        click(&mut s, 910., 22.);
         assert_eq!(s.history.project.bpm, 131.);
         frame(
             &mut s,

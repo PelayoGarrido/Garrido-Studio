@@ -3,10 +3,10 @@
   <h1>Garrido Studio</h1>
   <p>A desktop audio workstation written in Rust.<br>Original engine, instruments, effects and audio codecs.</p>
   <p>By <strong>Pelayo Garrido Martínez</strong></p>
-  <p><a href="https://github.com/PelayoGarrido/Garrido-Studio/releases/tag/v1.0.0">Download v1.0.0</a> · <a href="CONTRIBUTING.md">Contribute</a> · <a href="docs/ARCHITECTURE.md">Architecture</a></p>
+  <p><a href="https://github.com/PelayoGarrido/Garrido-Studio/releases/tag/v1.1.0">Download v1.1.0</a> · <a href="https://PelayoGarrido.github.io/Garrido-Studio/">Website</a> · <a href="CONTRIBUTING.md">Contribute</a> · <a href="docs/ARCHITECTURE.md">Architecture</a></p>
 </div>
 
-![Garrido Studio dark workspace](assets/screenshots/workspace-dark.png)
+![Garrido Studio dark workspace](assets/screenshots/workspace-garrido.jpg)
 
 Garrido Studio brings pattern sequencing, a piano roll, an audio playlist and a mixer into one native desktop workspace. Its Rust engine and DSP are implemented in this repository. Windowing, graphics, audio devices and file dialogs use pinned libraries.
 
@@ -16,11 +16,11 @@ Everything runs locally. No account, subscription, model download, telemetry or 
 
 | System | Package |
 |---|---|
-| macOS 13+, Apple Silicon | [macOS arm64](https://github.com/PelayoGarrido/Garrido-Studio/releases/download/v1.0.0/Garrido-Studio-1.0.0-macOS-arm64.zip) |
-| Windows x64 | [Windows x64](https://github.com/PelayoGarrido/Garrido-Studio/releases/download/v1.0.0/Garrido-Studio-1.0.0-Windows-x64.zip) |
-| Linux x86_64, glibc 2.39 | [Linux x64](https://github.com/PelayoGarrido/Garrido-Studio/releases/download/v1.0.0/Garrido-Studio-1.0.0-Linux-x64.tar.gz) |
+| macOS 13+, Apple Silicon | [macOS arm64](https://github.com/PelayoGarrido/Garrido-Studio/releases/download/v1.1.0/Garrido-Studio-1.1.0-macOS-arm64.zip) |
+| Windows x64 | [Windows x64](https://github.com/PelayoGarrido/Garrido-Studio/releases/download/v1.1.0/Garrido-Studio-1.1.0-Windows-x64.zip) |
+| Linux x86_64, glibc 2.39 | [Linux x64](https://github.com/PelayoGarrido/Garrido-Studio/releases/download/v1.1.0/Garrido-Studio-1.1.0-Linux-x64.tar.gz) |
 
-Extract the entire package and open Garrido Studio. Keep its Resources and Plugins folders together. An example session and the license notices are included. [SHA256SUMS.txt](https://github.com/PelayoGarrido/Garrido-Studio/releases/download/v1.0.0/SHA256SUMS.txt) identifies the release files.
+Extract the entire package and open Garrido Studio. Keep its Resources and Plugins folders together. An example session and the license notices are included. [SHA256SUMS.txt](https://github.com/PelayoGarrido/Garrido-Studio/releases/download/v1.1.0/SHA256SUMS.txt) identifies the release files.
 
 Linux requires ALSA and a graphical X11/Wayland desktop. macOS uses an ad-hoc signature; Developer ID/notarization and Windows publisher signing are future distribution work. If the operating system blocks opening a package, retain the exact message rather than disabling protection.
 
@@ -62,3 +62,7 @@ The root audio workspace has no registry dependencies. The desktop uses pinned e
 [PolyForm Noncommercial 1.0.0](LICENSE), with an explicit [commercial music permission](COMMERCIAL-MUSIC-PERMISSION.md). You may produce and sell music/audio using Garrido Studio. Selling or monetizing the software, a fork or a hosted software service requires separate permission from Pelayo Garrido Martínez.
 
 This is source-available software. Third-party libraries and assets retain their own licenses. No Lemon Studio engine, source code or repository artwork is incorporated; the independently drawn workspace was informed by its public screenshots. See [legal provenance](docs/LEGAL.md).
+
+## Development note
+
+AI tools assisted coding and documentation. Tests, provenance, third-party notices and current limitations are documented in this repository.

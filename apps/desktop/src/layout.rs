@@ -3,7 +3,7 @@ use crate::brand::{PLUM, ROSE, VIOLET};
 use crate::canvas::*;
 use crate::{controls, workspace::PIANO_TOOLS};
 impl Studio {
-    pub(crate) fn draw_reference(&self, c: &Canvas) {
+    pub(crate) fn draw_workspace(&self, c: &Canvas) {
         c.fill(rect(0., 0., self.width, self.height), [0.145, 0.145, 0.145]);
         self.draw_toolbar(c);
         self.draw_browser(c);
@@ -75,118 +75,102 @@ impl Studio {
         }
     }
     fn draw_toolbar(&self, c: &Canvas) {
-        c.fill(rect(0., 0., self.width, 40.), [0.235, 0.235, 0.235]);
-        c.fill(rect(0., 41., self.width, 39.), [0.225, 0.225, 0.225]);
-        c.fill(rect(0., 40., self.width, 1.), [0.15, 0.15, 0.15]);
-        c.fill(rect(0., 80., self.width, 2.), [0.12, 0.12, 0.12]);
-        for (i, name) in ["minus", "square", "x"].iter().enumerate() {
-            c.circle(14. + i as f64 * 20., 20., 9., [0.27, 0.28, 0.29]);
-            c.icon(name, 7. + i as f64 * 20., 13., 14., ICON);
-        }
-        c.round(rect(73., 4., 304., 32.), 4., [0.17, 0.17, 0.17]);
-        c.outline(rect(73., 4., 304., 32.), 4., 1., [0.13, 0.13, 0.13]);
+        c.fill(rect(0., 0., self.width, 82.), [0.16; 3]);
+        c.fill(rect(0., 48., self.width, 34.), [0.19; 3]);
+        c.fill(rect(0., 80., self.width, 2.), EDGE);
+        c.image(self.logo.id(), rect(16., 7., 36., 36.));
+        c.label("GARRIDO STUDIO", 66., 4., 22., TEXT, true);
         c.label(
-            &self
-                .history
-                .project
-                .title
-                .chars()
-                .take(43)
-                .collect::<String>(),
-            78.,
-            5.,
-            14.,
+            &format!(
+                "{}{}",
+                self.history
+                    .project
+                    .title
+                    .chars()
+                    .take(36)
+                    .collect::<String>(),
+                if self.dirty { " · edited" } else { "" }
+            ),
+            67.,
+            29.,
+            13.,
             DIM,
             false,
         );
-        let hint = if self.status.starts_with("Listo") {
-            ""
-        } else {
-            &self.status
-        };
-        c.label(
-            &hint.chars().take(49).collect::<String>(),
-            78.,
-            21.,
-            11.,
-            TEXT,
-            false,
-        );
-        c.icon("adjustments", 360., 18., 14., DIM);
-        c.round(rect(385., 3., 34., 33.), 4., [0.16, 0.16, 0.16]);
-        c.round(
-            rect(386., if self.song_mode { 20. } else { 5. }, 32., 15.),
-            3.,
-            ACCENT,
-        );
-        c.label(
-            "PAT",
-            392.,
-            3.,
-            12.,
-            if self.song_mode {
-                DIM
+        for spec in controls::toolbar().iter() {
+            let active = match spec.tag {
+                9003 => !self.song_mode,
+                9004 => self.song_mode,
+                9005 => self.metronome,
+                1 => self.playback.is_some() || self.job.is_some(),
+                70 => self.capture.is_some(),
+                100 => self.page == Page::Steps,
+                101 => self.page == Page::Piano,
+                102 => self.page == Page::Arrange,
+                103 => self.page == Page::Mixer,
+                104 => self.page == Page::Audio,
+                105 => self.page == Page::Automation,
+                _ => false,
+            };
+            let tint = if active { ACCENT } else { [0.22; 3] };
+            let ink = if active { PLUM } else { TEXT };
+            c.round(spec.r, 8., tint);
+            let x = spec.r.origin.x;
+            let y = spec.r.origin.y;
+            let icon = match spec.tag {
+                1 => Some("player-play"),
+                2 => Some("player-stop"),
+                70 => Some("microphone"),
+                31 => Some("minus"),
+                32 => Some("plus"),
+                9005 => Some("metronome"),
+                9351 => Some("help-circle"),
+                83 => Some("chevron-left"),
+                84 => Some("chevron-right"),
+                _ => None,
+            };
+            if let Some(icon) = icon {
+                c.icon(
+                    icon,
+                    x + (spec.r.size.width - 18.) / 2.,
+                    y + (spec.r.size.height - 18.) / 2.,
+                    18.,
+                    ink,
+                );
             } else {
-                [0.25, 0.23, 0.14]
-            },
-            false,
-        );
-        c.label(
-            "SONG",
-            388.,
-            20.,
-            12.,
-            if self.song_mode {
-                [0.25, 0.23, 0.14]
-            } else {
-                DIM
-            },
-            false,
-        );
-        for (name, x) in [("player-play", 425.), ("player-stop", 456.)] {
-            c.icon(name, x, 10., 20., ICON);
+                let title = match spec.tag {
+                    2006 => self
+                        .pattern()
+                        .map_or("Choose pattern", |i| {
+                            self.history.project.patterns[i].name.as_str()
+                        })
+                        .chars()
+                        .take(25)
+                        .collect::<String>(),
+                    9030 => format!(
+                        "Snap · {}",
+                        match self.workspace.note_grid {
+                            1 => "Off",
+                            PPQ => "Beat",
+                            BAR => "Bar",
+                            _ => "1/4",
+                        }
+                    ),
+                    9003 => "PATTERN".into(),
+                    9004 => "SONG".into(),
+                    _ => spec.name.into(),
+                };
+                c.label(&title, x + 10., y + 4., 16., ink, active);
+            }
         }
-        c.circle(
-            500.,
-            20.,
-            6.,
-            if self.capture.is_some() {
-                [0.88, 0.25, 0.25]
-            } else {
-                [0.40, 0.23, 0.23]
-            },
-        );
-        c.round(rect(516., 3., 54., 32.), 3., [0.12, 0.12, 0.12]);
         c.label(
-            &format!("{:03}", self.history.project.bpm.round() as u16),
-            519.,
-            7.,
+            &format!("{:03} BPM", self.history.project.bpm.round() as u16),
+            839.,
             16.,
-            ACCENT,
-            false,
+            17.,
+            TEXT,
+            true,
         );
-        c.label(".000", 542., 14., 8., DIM, false);
-        c.icon("chevron-up", 555., 8., 10., DIM);
-        c.icon("chevron-down", 555., 22., 10., DIM);
-        c.round(
-            rect(581., 4., 30., 31.),
-            5.,
-            if self.metronome {
-                ACCENT
-            } else {
-                [0.20, 0.20, 0.20]
-            },
-        );
-        c.icon("metronome", 585., 8., 22., PLUM);
-        for (name, x) in [
-            ("hourglass", 617.),
-            ("clock", 651.),
-            ("link", 684.),
-            ("repeat", 718.),
-        ] {
-            c.icon(name, x, 10., 21., [0.40, 0.44, 0.47]);
-        }
-        c.round(rect(746., 4., 128., 31.), 4., [0.12, 0.12, 0.12]);
         let tick = self.playback.as_ref().map_or(0., |p| {
             self.history
                 .project
@@ -198,133 +182,17 @@ impl Studio {
             (tick / PPQ as f64) as u32 % 4 + 1,
             (tick % PPQ as f64 / 10.) as u32
         );
-        c.segments(&time, 785., 10., 10., 21.);
-        c.label("B:S:T", 851., 3., 7., DIM, false);
-        c.round(rect(880., 4., 86., 31.), 3., [0.12, 0.12, 0.12]);
-        c.round(rect(970., 3., 75., 24.), 3., [0.13, 0.13, 0.13]);
-        c.round(rect(970., 29., 75., 9.), 3., [0.14, 0.14, 0.14]);
-        c.round(rect(1054., 3., 147., 34.), 3., [0.13, 0.13, 0.13]);
-        let memory = self
-            .history
-            .project
-            .tracks
-            .iter()
-            .filter_map(|t| t.sample.as_ref())
-            .map(|s| s.frames.len() * 8)
-            .sum::<usize>()
-            / (1024 * 1024);
-        c.label("—%", 1114., 3., 15., TEXT, false);
-        c.label(&format!("{memory} MB"), 1162., 3., 15., TEXT, false);
-        c.label("0", 1185., 20., 13., DIM, false);
-        for (name, x) in [
-            ("arrow-back-up", 1218.),
-            ("scissors", 1250.),
-            ("microphone", 1282.),
-            ("help-circle", 1314.),
-            ("device-floppy", 1346.),
-            ("file-export", 1378.),
-            ("info-circle", 1410.),
-            ("download", 1442.),
-        ] {
-            c.round(rect(x - 6., 4., 30., 31.), 4., [0.215, 0.215, 0.215]);
-            c.icon(name, x, 10., 20., ICON);
-        }
-        for spec in controls::controls()
-            .iter()
-            .filter(|s| (2000..=2005).contains(&s.tag) || s.tag == 9 || s.tag == 9353)
-        {
-            c.label(
-                spec.name,
-                spec.r.origin.x + 3.,
-                54.,
-                14.,
-                [0.84, 0.84, 0.84],
-                false,
-            );
-        }
-        c.knob(318., 61., 13., self.history.project.master as f64, true);
-        let pan = self
-            .history
-            .project
-            .tracks
-            .get(self.selected)
-            .map_or(0., |t| t.pan);
-        c.knob(358., 61., 13., (pan as f64 + 1.) * 0.5, false);
-        c.fill(rect(390., 55., 179., 17.), [0.15, 0.15, 0.15]);
-        c.fill(rect(391., 58., 2., 11.), ACCENT);
-        for (tag, name, x) in [
-            (100, "layout-list", 581.),
-            (101, "layout-sidebar-right", 614.),
-        ] {
-            let open = self.workspace.panels[if tag == 100 { 0 } else { 1 }].visible;
-            c.round(
-                rect(x, 46., 30., 31.),
-                5.,
-                if open { ACCENT } else { [0.18, 0.18, 0.18] },
-            );
-            c.icon(name, x + 4., 51., 22., if open { PLUM } else { ICON });
-        }
-        for (name, x) in [("grid-dots", 652.), ("link", 685.), ("adjustments", 719.)] {
-            c.icon(name, x, 51., 20., ICON);
-        }
-        c.icon("magnet", 750., 52., 18., DIM);
-        c.round(rect(768., 50., 63., 23.), 4., [0.14, 0.14, 0.14]);
+        c.round(rect(1010., 8., 176., 36.), 10., [0.10; 3]);
+        c.segments(&time, 1030., 14., 10., 21.);
+        c.label("BAR / BEAT", 1204., 17., 12., DIM, false);
         c.label(
-            match self.workspace.note_grid {
-                1 => "None",
-                PPQ => "Beat",
-                BAR => "Bar",
-                _ => "Line",
-            },
-            776.,
-            51.,
-            16.,
-            TEXT,
-            false,
-        );
-        c.icon("chevron-right", 816., 56., 10., DIM);
-        c.icon("chevron-right", 839., 54., 12., DIM);
-        c.round(rect(853., 47., 96., 30.), 4., [0.13, 0.13, 0.13]);
-        if let Some(pattern) = self.pattern() {
-            c.label(
-                &self.history.project.patterns[pattern]
-                    .name
-                    .chars()
-                    .take(14)
-                    .collect::<String>(),
-                862.,
-                50.,
-                18.,
-                [0.86, 0.86, 0.86],
-                true,
-            );
-        }
-        c.icon("plus", 952., 55., 13., DIM);
-        for (name, x) in [
-            ("music", 978.),
-            ("piano", 1011.),
-            ("layout-list", 1044.),
-            ("adjustments", 1077.),
-            ("device-audio-tape", 1110.),
-            ("file", 1143.),
-            ("tools", 1176.),
-            ("volume", 1209.),
-            ("hand-move", 1242.),
-            ("lock", 1275.),
-        ] {
-            c.round(rect(x - 6., 46., 30., 31.), 4., [0.21, 0.21, 0.21]);
-            c.icon(name, x, 52., 20., ICON);
-        }
-        c.label(
-            "Today  Welcome to Garrido Studio",
+            &self.status.chars().take(25).collect::<String>(),
             1310.,
-            53.,
-            13.,
-            [0.36, 0.37, 0.37],
+            18.,
+            12.,
+            DIM,
             false,
         );
-        c.icon("world", 1500., 54., 14., DIM);
-        c.image(self.logo.id(), rect(1855., 13., 50., 50.));
     }
     fn draw_browser(&self, c: &Canvas) {
         c.fill(
@@ -332,29 +200,22 @@ impl Studio {
             [0.135, 0.135, 0.135],
         );
         c.fill(rect(0., 82., 205., 24.), [0.16, 0.16, 0.16]);
-        c.icon("chevron-right", 4., 87., 11., DIM);
-        c.icon("arrows-horizontal", 17., 87., 12., DIM);
-        c.icon("arrow-left", 34., 87., 11., ICON);
-        c.label("Browser", 51., 85., 14., DIM, false);
-        for (i, name) in ["wave-sine", "file-description", "volume", "world", "star"]
-            .iter()
-            .enumerate()
-        {
-            let x = 4. + i as f64 * 40.;
-            if self.workspace.browser_tab as usize == i {
-                c.round(rect(x, 108., 33., 30.), 4., [0.16, 0.16, 0.16]);
-                c.outline(rect(x, 108., 33., 30.), 4., 1.5, ACCENT);
-            }
-            c.icon(
-                name,
+        c.label("LIBRARY", 16., 85., 15., DIM, true);
+        for (i, title) in ["Audio", "Session", "Plugins"].iter().enumerate() {
+            let x = 10. + i as f64 * 64.;
+            let selected = self.workspace.browser_tab as usize == i;
+            c.round(
+                rect(x, 108., 58., 30.),
+                7.,
+                if selected { [0.27; 3] } else { [0.17; 3] },
+            );
+            c.label(
+                title,
                 x + 7.,
                 114.,
-                20.,
-                if self.workspace.browser_tab as usize == i {
-                    ACCENT
-                } else {
-                    ICON
-                },
+                14.,
+                if selected { ACCENT } else { TEXT },
+                selected,
             );
         }
         c.fill(
@@ -373,7 +234,7 @@ impl Studio {
             DIM,
         );
         c.icon("file-description", 21., 146., 15., ACCENT);
-        c.label("Current project", 39., 142., 16., ACCENT, false);
+        c.label("This session", 39., 142., 16., ACCENT, false);
         let mut y = 166.;
         if self.workspace.browser_expanded {
             c.icon("chevron-down", 16., 170., 11., DIM);
@@ -417,57 +278,37 @@ impl Studio {
         c.fill(rect(201., 82., 7., self.height - 82.), [0.19, 0.19, 0.19]);
         c.fill(rect(207., 82., 2., self.height - 82.), [0.12, 0.12, 0.12]);
         c.label(
-            "TAGS",
-            19.,
-            self.height - 22.,
-            11.,
-            [0.35, 0.35, 0.35],
-            true,
+            &format!(
+                "{} channels · {} patterns",
+                self.history.project.tracks.len(),
+                self.history.project.patterns.len()
+            ),
+            16.,
+            self.height - 24.,
+            12.,
+            DIM,
+            false,
         );
-        c.icon("folder", 158., self.height - 21., 13., DIM);
-        c.icon("search", 181., self.height - 22., 15., ACCENT);
     }
     fn draw_playlist(&self, c: &Canvas) {
         let h = self.height;
         c.fill(rect(209., 82., self.width - 209., 24.), [0.19, 0.19, 0.19]);
         c.fill(rect(209., 105., self.width - 209., 1.), EDGE);
-        for (name, x) in [
-            ("chevron-right", 216.),
-            ("magnet", 235.),
-            ("pencil", 266.),
-            ("brush", 289.),
-            ("eraser", 312.),
-            ("volume-off", 334.),
-            ("arrows-horizontal", 357.),
-            ("pencil", 378.),
-            ("select", 399.),
-            ("zoom-in", 420.),
-            ("volume", 441.),
-            ("arrows-horizontal", 461.),
-        ] {
-            if name == "pencil" && x == 266. {
-                c.round(rect(x - 1., 84., 21., 20.), 4., ACCENT);
-                c.icon(name, x + 1., 86., 17., PLUM);
-            } else {
-                c.icon(name, x, 86., 17., ICON);
-            }
-        }
-        let pattern = self.pattern().map_or("Pattern 1", |i| {
-            self.history.project.patterns[i].name.as_str()
-        });
-        c.text(
-            &format!("Playlist - Arrangement  ›  {pattern}  ›"),
-            489.,
-            84.,
-            16.,
+        c.label("ARRANGEMENT", 226., 85., 15., TEXT, true);
+        c.label(
+            &format!(
+                "{} bars · {} clips",
+                self.history.project.bars,
+                self.history.project.clips.len()
+            ),
+            490.,
+            85.,
+            15.,
+            DIM,
+            false,
         );
-        c.icon("minus", 1857., 87., 13., ICON);
-        c.icon("copy", 1877., 87., 13., ICON);
-        c.icon("x", 1898., 87., 13., ICON);
         c.fill(rect(209., 106., 159., h - 106.), [0.15, 0.15, 0.15]);
-        for (name, x) in [("piano", 222.), ("wave-sine", 271.), ("chart-bar", 319.)] {
-            c.icon(name, x, 122., 19., ICON);
-        }
+        c.label("PATTERNS", 225., 123., 14., DIM, true);
         c.fill(rect(350., 148., 18., h - 148.), [0.17, 0.17, 0.17]);
         c.fill(rect(367., 107., 2., h - 107.), [0.20, 0.20, 0.20]);
         let start = self.pattern().unwrap_or(0).saturating_sub(20);
@@ -744,33 +585,17 @@ impl Studio {
             1.,
             [0.14, 0.14, 0.14],
         );
-        for (name, xx) in [
-            ("chevron-right", x + 10.),
-            ("clock", x + 35.),
-            ("volume", x + 226.),
-        ] {
-            c.icon(name, xx, y + 7., 15., ICON);
-        }
-        c.round(rect(x + 106., y + 4., 95., 23.), 3., [0.17, 0.17, 0.17]);
-        c.label("All", x + 111., y + 5., 16., TEXT, false);
-        c.icon("chevron-right", x + 189., y + 11., 9., DIM);
-        c.label("Channel rack", x + 247., y + 4., 16., TEXT, false);
-        c.knob(x + 363., y + 14., 9., 0.5, false);
-        c.round(rect(x + 380., y + 4., 31., 22.), 4., [0.24, 0.24, 0.24]);
-        for (name, xx) in [
-            ("repeat", x + 424.),
-            ("chart-bar", x + 447.),
-            ("piano", x + 470.),
-            ("x", x + 490.),
-        ] {
-            c.icon(
-                name,
-                xx,
-                y + 7.,
-                15.,
-                if name == "piano" { ACCENT } else { ICON },
-            );
-        }
+        c.icon("music", x + 12., y + 7., 16., ACCENT);
+        c.label("STEP SEQUENCER", x + 38., y + 4., 17., TEXT, true);
+        c.label(
+            "16 steps / pattern",
+            x + r.size.width - 210.,
+            y + 6.,
+            14.,
+            DIM,
+            false,
+        );
+        c.icon("x", x + r.size.width - 22., y + 7., 14., ICON);
         let start = (self.selected / 6) * 6;
         for (index, track) in self
             .history
@@ -817,7 +642,12 @@ impl Studio {
                         .any(|n| n.channel_or(index) == index && n.tick / (PPQ / 4) == step)
                 });
                 c.round(
-                    rect(x + 229. + step as f64 * 16., yy + 4., 13., 19.),
+                    rect(
+                        x + 229. + step as f64 * workspace::step_width(r),
+                        yy + 4.,
+                        workspace::step_width(r) - 5.,
+                        19.,
+                    ),
                     3.,
                     if on {
                         ACCENT

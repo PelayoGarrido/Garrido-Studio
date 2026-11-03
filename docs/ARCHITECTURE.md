@@ -22,7 +22,7 @@ CPAL output consumes a bounded queue with rate conversion and finite-level clean
 
 Rendering, export, recovery and CLAP scanning use bounded workers. Scanning does not block the UI; stale results after session edits are discarded. Block playback streams through a fixed queue and still stops on edits; live graph exchange is absent. The nested lockfile keeps the native comparison build independent while the common desktop is validated.
 
-`crates/plugin-host` shares the worker protocol and exact first-party package/hash gate across macOS, Windows and Linux. Native loaders and per-OS resource limits are separate modules; Windows/Linux execution remains pending. External plugins are rejected on every system. `crates/apple-dispatch` is a small owned compatibility patch forwarding the older Foundation wrapper's synchronous main-queue call to maintained dispatch2; it is not an audio callback dependency.
+`crates/plugin-host` shares the worker protocol and exact first-party package/hash gate across macOS, Windows and Linux. Native loaders and per-OS resource limits are separate modules; Native CI validates the included workers on Windows and Linux; driver, GUI and physical-device acceptance remain separate. External plugins are rejected on every system. `crates/apple-dispatch` is a small owned compatibility patch forwarding the older Foundation wrapper's synchronous main-queue call to maintained dispatch2; it is not an audio callback dependency.
 
 ## Native application
 
