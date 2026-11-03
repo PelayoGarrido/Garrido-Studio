@@ -1,0 +1,16 @@
+[package]
+name = "dispatch"
+version = "0.2.0"
+edition = "2024"
+license-file = "../../LICENSE"
+authors = ["Pelayo Garrido Martínez"]
+description = "Limited GCD adapter for objc2-foundation 0.2"
+publish = false
+
+[workspace]
+
+[target.'cfg(target_vendor = "apple")'.dependencies]
+dispatch2 = { version = "=0.3.1", default-features = false, features = ["std"] }
+
+[lints.rust]
+unsafe_code = "forbid"

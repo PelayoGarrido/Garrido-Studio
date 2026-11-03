@@ -1,0 +1,33 @@
+[package]
+name = "garrido-desktop"
+version = "1.0.0"
+edition = "2024"
+rust-version = "1.95"
+authors = ["Pelayo Garrido Martínez"]
+license-file = "../../LICENSE"
+publish = false
+
+[workspace]
+
+[dependencies]
+garrido-studio = { path = "../.." }
+garrido-plugin-host = { path = "../../crates/plugin-host" }
+eframe = { version = "=0.37.0", default-features = false, features = ["accesskit", "clipboard", "system_fonts", "wgpu", "x11", "wayland"] }
+cpal = { version = "=0.18.2", default-features = false }
+fs4 = { version = "=1.1.0", default-features = false }
+rfd = { version = "=0.17.2", default-features = false, features = ["xdg-portal", "wayland"] }
+
+[profile.dev]
+debug = 0
+incremental = false
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+strip = true
+
+[lints.rust]
+unsafe_code = "forbid"
+
+[patch.crates-io]
+dispatch = { path = "../../crates/apple-dispatch" }

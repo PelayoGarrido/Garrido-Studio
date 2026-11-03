@@ -1,0 +1,83 @@
+name: Desktop checks and releases
+on:
+  push:
+    tags: ['v[0-9]*']
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: desktop-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+jobs:
+  desktop:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-15, windows-2025, ubuntu-24.04]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Linux libraries
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libasound2-dev libwayland-dev libxkbcommon-dev pkg-config
+      - name: Pinned Rust toolchain
+        run: rustup toolchain install 1.99.1 --profile minimal --component rustfmt --component clippy
+      - name: Fetch locked dependencies
+        run: python tools/desktop.py fetch
+      - name: Core checks
+        run: python tools/dev.py check
+      - name: Desktop checks
+        run: python tools/desktop.py check --release
+      - name: Optimized core and plugins
+        run: python tools/dev.py build
+      - name: Optimized desktop
+        run: python tools/desktop.py build
+      - name: Package and check included plugins
+        run: python tools/package_desktop.py --release --check-plugins
+      - name: Verify release archive
+        run: python tools/release_bundle.py
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        if: github.event_name != 'pull_request'
+        with:
+          name: desktop-${{ runner.os }}
+          path: dist/release-assets/*
+          if-no-files-found: error
+          retention-days: 3
+  security:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Pinned Rust toolchain
+        run: rustup toolchain install 1.99.1 --profile minimal
+      - name: Security policy regression checks
+        run: python -m unittest discover -s tools/tests
+      - name: Current RustSec audit
+        run: python tools/security_ci.py
+  release:
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') && github.repository == 'PelayoGarrido/Garrido-Studio'
+    needs: [desktop, security]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+        with:
+          pattern: desktop-*
+          path: dist/release-assets
+          merge-multiple: true
+      - name: Verify hashes and publish all three applications
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python tools/publish_release.py

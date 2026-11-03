@@ -1,0 +1,9 @@
+[package]
+name="garrido-clap-abi"
+version="1.0.0"
+edition="2024"
+license-file="../../LICENSE"
+publish=false
+
+[lints.rust]
+unsafe_op_in_unsafe_fn="deny"

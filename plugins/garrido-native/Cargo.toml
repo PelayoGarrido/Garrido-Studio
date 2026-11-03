@@ -1,0 +1,17 @@
+[package]
+name="garrido-native"
+version="1.0.0"
+edition="2024"
+license-file="../../LICENSE"
+authors=["Pelayo Garrido Martínez"]
+publish=false
+
+[lib]
+crate-type=["cdylib","rlib"]
+
+[dependencies]
+garrido-clap-abi={path="../../crates/clap-abi"}
+garrido-studio={path="../.."}
+
+[lints.rust]
+unsafe_op_in_unsafe_fn="deny"

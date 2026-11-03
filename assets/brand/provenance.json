@@ -1,0 +1,27 @@
+{
+  "owner_designation": "Official logo supplied and designated by the user",
+  "author_software": "Pelayo Garrido Martínez",
+  "official_original": "logo-official.jpeg",
+  "original_sha256": "cc96aac949aa676908209b9a5fe9f6bceb4a1c376224e220b6166e590c70074b",
+  "moodboard": "moodboard-approved.png",
+  "moodboard_sha256": "936ec097dced8fc95ee92c3fde4f88ce61285681badf19d3f864df637fd87771",
+  "moodboard_status": "Approved by the user; do not change",
+  "moodboard_generator": "Built-in image generation tool",
+  "moodboard_is_concept_not_runtime_evidence": true,
+  "derivatives": "Format conversion and icon resampling of the unchanged official original; white background retained",
+  "rgba": {
+    "width": 128,
+    "height": 128,
+    "layout": "RGBA8, top to bottom, opaque"
+  },
+  "palette": {
+    "coral": "#FF956C",
+    "rose": "#F26DB2",
+    "violet": "#A65CEC",
+    "pearl": "#FCFAFF",
+    "plum": "#18151E"
+  },
+  "application_theme_default": "dark",
+  "light_theme": "explicit user selection only",
+  "date": "2026-10-28"
+}

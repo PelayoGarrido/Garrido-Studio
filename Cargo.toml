@@ -1,0 +1,39 @@
+[package]
+name = "garrido-studio"
+version = "1.0.0"
+edition = "2024"
+rust-version = "1.90"
+authors = ["Pelayo Garrido Martínez"]
+license-file = "LICENSE"
+description = "An independent pattern-based audio workstation with a Rust audio engine"
+publish = false
+
+[workspace]
+members=[".","crates/clap-abi","crates/plugin-host","plugins/garrido-native"]
+resolver="3"
+
+[dependencies]
+garrido-clap-abi={path="crates/clap-abi"}
+
+[lib]
+name = "garrido_studio"
+path = "src/lib.rs"
+
+[[bin]]
+name = "garrido-studio"
+path = "src/main.rs"
+
+[profile.dev]
+debug = 1
+incremental = false
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+strip = true
+
+[lints.rust]
+unsafe_op_in_unsafe_fn = "deny"
+
+[lints.clippy]
+undocumented_unsafe_blocks = "warn"

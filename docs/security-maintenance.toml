@@ -1,0 +1,26 @@
+review = "Linux accessibility depends on the zbus 5 family; standalone crates were merged into zbus 6. No vulnerability advisory is exempted. Migrate with the upstream accessibility stack."
+
+[[exceptions]]
+id = "RUSTSEC-2026-0371"
+package = "zbus_names"
+version = "4.3.5"
+checksum = "812a12be4ead7a59e18ea8f047d08add0066b73bc62fc1467066a2472ae088dd"
+reviewed = "2026-11-03"
+expires = "2026-11-17"
+
+[[exceptions]]
+id = "RUSTSEC-2026-0370"
+package = "zvariant"
+version = "5.15.1"
+checksum = "80bf6d6cd6a4b601acb64cfb8284cdc643fcfa75ef26ae3c46ec8aa4e8a1fbb7"
+reviewed = "2026-11-03"
+expires = "2026-11-17"
+
+[[exceptions]]
+id = "RUSTSEC-2026-0372"
+package = "zvariant_derive"
+version = "5.15.1"
+checksum = "ef2672456ba1cb54b5eaec136e63135b3c7495fb938e53b28a62e633496d486d"
+reviewed = "2026-11-03"
+expires = "2026-11-17"
+

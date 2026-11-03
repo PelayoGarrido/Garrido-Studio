@@ -1,0 +1,17 @@
+[package]
+name = "garrido-plugin-host"
+version = "1.0.0"
+edition = "2024"
+license-file = "../../LICENSE"
+authors = ["Pelayo Garrido Martínez"]
+publish = false
+
+[dependencies]
+garrido-studio = { path = "../.." }
+garrido-clap-abi = { path = "../clap-abi" }
+
+[lints.rust]
+unsafe_op_in_unsafe_fn = "deny"
+
+[lints.clippy]
+undocumented_unsafe_blocks = "warn"
