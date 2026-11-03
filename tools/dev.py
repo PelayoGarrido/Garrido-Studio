@@ -9,10 +9,10 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 ENV = dict(os.environ)
-ENV["PATH"] = str(Path.home() / ".cargo/bin") + os.pathsep + ENV.get("PATH", "")
+ENV["PATH"] = str(Path(os.environ.get("CARGO_HOME", str(Path.home() / ".cargo"))) / "bin") + os.pathsep + ENV.get("PATH", "")
 ENV.pop("RUSTFLAGS", None)
 ENV["CARGO_ENCODED_RUSTFLAGS"] = "--remap-path-prefix=" + str(ROOT) + "=."
-CARGO = str(Path.home() / ".cargo/bin/cargo")
+CARGO = shutil.which("cargo", path=ENV["PATH"]) or str(Path.home() / ".cargo/bin/cargo")
 
 
 def run(*args):
