@@ -67,6 +67,24 @@ class AuditPolicyTests(unittest.TestCase):
         self.report["warnings"] = {}
         self.assertTrue(self.decide(policy={})["passed"])
 
+    def test_yanked_warning_without_advisory_blocks_without_crashing(self):
+        self.report["warnings"]["yanked"] = [{
+            "kind": "yanked", "advisory": None,
+            "package": {"name": "example", "version": "1.0.0"},
+        }]
+        result = self.decide()
+        self.assertFalse(result["passed"])
+        self.assertEqual(result["unreviewed_warnings"][0]["package"], "example")
+
+    def test_malformed_report_sections_fail_closed(self):
+        for report in [None, [], {"vulnerabilities": None, "warnings": {}},
+                       {"vulnerabilities": {}, "warnings": None}]:
+            self.assertFalse(assess(report, self.policy)["passed"])
+        for warnings in [{"yanked": None}, {"yanked": [None]}, {"yanked": [{}]}]:
+            report = deepcopy(self.report)
+            report["warnings"] = warnings
+            self.assertFalse(self.decide(report=report)["passed"])
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,5 +1,5 @@
 {
-  "lock_sha256": "83941c3a4513edf2c8b630c4b265b648f9ce3a085c1faae8a0225cbcd785460b",
+  "lock_sha256": "fa010a72c762857688098b88631eec9889e3eaa1e73547ed39d52774a2ac9335",
   "packages": [
     {
       "name": "accesskit",
@@ -349,18 +349,18 @@
     },
     {
       "name": "async-executor",
-      "version": "1.14.0",
-      "registry_checksum": "c96bf972d85afc50bf5ab8fe2d54d1586b4e0b46c97c50a0c9e71e2f7bcd812a",
+      "version": "1.14.1",
+      "registry_checksum": "f426a31126c735126297bc5ea7a521263c9faff4f63ca415267ee625651c4f37",
       "license": "Apache-2.0 OR MIT",
       "repository": "https://github.com/smol-rs/async-executor",
-      "commit": "543403e773ec4941a6272e29c2ff649bfd01a4f8",
+      "commit": "a75cad623bd5c6c80ab19a5befb3d9b93a79bfcd",
       "files": [
         {
-          "file": "legal/desktop-dependencies/registry/async-executor-1.14.0/LICENSE-APACHE",
+          "file": "legal/desktop-dependencies/registry/async-executor-1.14.1/LICENSE-APACHE",
           "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2"
         },
         {
-          "file": "legal/desktop-dependencies/registry/async-executor-1.14.0/LICENSE-MIT",
+          "file": "legal/desktop-dependencies/registry/async-executor-1.14.1/LICENSE-MIT",
           "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3"
         }
       ],

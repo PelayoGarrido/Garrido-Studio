@@ -33,7 +33,7 @@ def main():
     executable = str(bundled) if bundled.is_file() else shutil.which("cargo-audit")
     if not executable:
         raise SystemExit("Falta cargo-audit oficial. Consulta docs/DEPENDENCIES.md.")
-    args = [executable, "audit", "--file", str(lock), "--deny", "warnings", "--json"]
+    args = [executable, "audit", "--file", str(lock), "--deny", "warnings", "--json", "--quiet"]
     database = options.db.resolve()
     if database.is_dir():
         args.extend(["--db", str(database), "--no-fetch"])
@@ -46,12 +46,13 @@ def main():
         report = json.loads(result.stdout)
     except json.JSONDecodeError:
         raise SystemExit("RustSec no ha producido un informe válido")
-    policy = {} if options.strict else tomllib.loads((ROOT / "docs/security-maintenance.toml").read_text(encoding="utf-8"))
-    decision = assess(report, policy, datetime.now(timezone.utc).date())
-    passed = decision["passed"] and result.returncode in (0, 1)
     output = ROOT / "outputs"
     output.mkdir(exist_ok=True)
     (output / "desktop-official-audit.json").write_text(json.dumps(report, indent=2) + "\n")
+    (output / "desktop-official-audit-stderr.txt").write_text(result.stderr)
+    policy = {} if options.strict else tomllib.loads((ROOT / "docs/security-maintenance.toml").read_text(encoding="utf-8"))
+    decision = assess(report, policy, datetime.now(timezone.utc).date())
+    passed = decision["passed"] and result.returncode in (0, 1) and not result.stderr.strip()
     summary = {
         "checked_at": datetime.now(timezone.utc).isoformat(),
         "advisory_database": str(database),
@@ -61,6 +62,7 @@ def main():
         "warnings": {key: len(value) for key, value in report["warnings"].items()},
         "passed": passed,
         "official_strict_passed": result.returncode == 0,
+        "scanner_diagnostics_present": bool(result.stderr.strip()),
         "policy": "strict" if options.strict else "reviewed-maintenance-only",
         "reviewed_warnings": decision["reviewed_warnings"],
         "unreviewed_warnings": decision["unreviewed_warnings"],

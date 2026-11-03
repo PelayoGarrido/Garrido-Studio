@@ -2,6 +2,14 @@
 
 This ledger retains historical checks and records the v1 release scope separately from full reference parity. Current capabilities and further work are in README.md, CONTRIBUTING.md and PARITY.md. Historical failures and earlier executable hashes remain attached to their original evidence.
 
+## Native CI follow-up · 2026-11-03
+
+[Run 41573613175](https://github.com/PelayoGarrido/Garrido-Studio/actions/runs/41573613175), source revision `deccfa828455fec9c1ea96dd4340d86551bff8e2`, passed all three native desktop jobs: macOS arm64, Windows x64 and Ubuntu 24.04 x64. Each job completed core and editor checks, optimized builds, all fourteen included-plugin diagnostics and archive readback. These checks do not establish real recording-device or long-session musical acceptance.
+
+That run did not publish. Its security job found a yanked-package warning with no advisory object, exposing a parser error. A direct, bounded check of all 401 locked registry records confirmed async-executor 1.14.0 was the sole yanked version. Its official 1.14.1 crate and checksum were verified; the changelog fixes a use-after-free during executor destruction. The lock and license inventory now select that correction. The audit wrapper preserves the raw result before interpreting it and refuses incomplete registry diagnostics. Sixteen Python security/release tests pass, including null warnings and a clean-looking advisory result with a failed registry check. The final corrected package set requires a new complete native CI run.
+
+Initial native setup failures were also corrected: audited assets and license texts retain their exact bytes on Windows checkout, and build scripts resolve Cargo from the configured toolchain path rather than assuming its home-directory location. No account state, original media or approved branding was changed.
+
 ## V1 release preparation · 2026-11-03
 
 Version 1.0.0 covers the implemented local workstation flows. Full reference parity remains the contribution roadmap. The final local checks pass **129 core/plugin tests**, **32 optimized common-desktop tests** and **13 Python security/publication regression checks**. Rust formatting and strict Clippy pass. The registry dependency graph is unchanged; owned packages are version 1.0.0.
