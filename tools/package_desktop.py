@@ -35,6 +35,16 @@ def main():
     cross.add_argument("--from-linux-cross", action="store_true")
     options = parser.parse_args()
     version = tomllib.loads((ROOT / "Cargo.toml").read_text(encoding="utf-8"))["package"]["version"]
+    revision = subprocess.run(["git", "rev-parse", "--verify", "HEAD"], cwd=ROOT, capture_output=True, text=True, encoding="utf-8", timeout=10)
+    commit = revision.stdout.strip() if revision.returncode == 0 else None
+    if options.release:
+        if commit is None or not re.fullmatch(r"[0-9a-f]{40}", commit):
+            raise SystemExit("La publicación necesita una revisión Git identificable")
+        status = subprocess.run(["git", "status", "--porcelain", "--untracked-files=normal"], cwd=ROOT, capture_output=True, timeout=10, check=True)
+        if status.stdout:
+            raise SystemExit("Guarda los cambios de fuentes en Git antes de empaquetar la publicación")
+        if os.environ.get("GITHUB_SHA", commit) != commit:
+            raise SystemExit("La revisión del workflow no coincide con las fuentes")
     if options.check_plugins and (options.from_windows_cross or options.from_linux_cross):
         raise SystemExit("El diagnóstico solo se ejecuta en el sistema nativo del paquete")
     if options.variant and not re.fullmatch(r"[a-z0-9][a-z0-9-]{0,39}", options.variant):
@@ -157,7 +167,7 @@ def main():
         "platform": key, "architecture": architecture, "version": version,
         "internal_preview": not options.release, "publication_gate": "OWNER_AUTHORIZED_V1" if options.release else "PREVIEW",
         "cross_built": options.from_windows_cross or options.from_linux_cross, "runtime_accepted": False,
-        "source_commit": os.environ.get("GITHUB_SHA"),
+        "source_commit": commit,
         "application": str(app.relative_to(ROOT)), "binary_sha256": hashlib.sha256(binary.read_bytes()).hexdigest(),
         "bytes": sum(p.stat().st_size for p in folder.rglob("*") if p.is_file()),
     }

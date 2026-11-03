@@ -1,6 +1,6 @@
 # Prueba de las aplicaciones en Windows y Linux
 
-Pelayo ha confirmado que puede probar ambos sistemas. Ya hay aplicaciones completas compiladas y empaquetadas para Windows x64 y Linux x86_64/glibc 2.39 (Ubuntu 24.04 como base). Todavía no se han ejecutado en esos sistemas. La inspección de ejecutables y la compilación cruzada no sustituyen estas pruebas.
+La v1 se distribuye para Windows x64 y Linux x86_64/glibc 2.39 (Ubuntu 24.04 como base). Esta guía recoge la comprobación humana de interfaz, dispositivos y archivos; los informes nativos de CI y la inspección de ejecutables son evidencias separadas. Las casillas pendientes requieren resultados reales del sistema probado.
 
 La batería automática se entrega por separado en `dist/qa`. Extraerla entera y ejecutar `Run-Checks.cmd` en Windows o `Run-Checks.sh` en Linux genera `Results.txt`, con sistema y resultados por ejecutable. No requiere Rust, Python ni descargas. Usa archivos temporales propios y audio sintético en memoria; no abre salida de audio, micrófono ni plugins externos. Un informe correcto no sustituye la comprobación gráfica, musical ni de dispositivos de esta tabla. No se necesita desactivar protecciones.
 
@@ -28,4 +28,4 @@ Usar `fixtures/multichannel.gstudio`: sesión propia de 245 bytes, tres canales,
 
 Registrar versión de Windows o distribución/sesión X11/Wayland de Linux, escala de pantalla, dispositivo y frecuencia de audio, huella del paquete, resultado de cada paso y capturas de fallos. No incluir contraseñas ni archivos personales en los informes.
 
-El alojamiento de plugins externos sigue desactivado en los tres sistemas hasta validar su aislamiento. Windows/Linux implementan carga y límites de recursos exclusivamente para el módulo propio empaquetado, con ejecución real pendiente. Esta guía no da por implementadas funciones pendientes de la matriz. La primera publicación continúa bloqueada por la cobertura completa, las pruebas reales y la revisión de distribución.
+El alojamiento de plugins externos sigue desactivado en los tres sistemas hasta validar su aislamiento. Windows/Linux implementan carga y límites de recursos exclusivamente para el módulo propio empaquetado, con ejecución real pendiente. Esta guía no da por implementadas funciones pendientes de la matriz. Las funciones adicionales y la aceptación de dispositivos se siguen en CONTRIBUTING.md y PARITY.md.
