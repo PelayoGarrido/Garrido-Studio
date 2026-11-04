@@ -69,3 +69,7 @@ The common application prepares an Engine off the UI thread, then generates bloc
 `Engine::streaming` compiles long songs with bounded event/effect budgets without reserving whole-song audio. Whole-song `render()` rejects streaming instances before allocation. The separate offline constructor retains its duration/buffer/work bounds; making playback longer does not bypass export limits.
 
 Format 5 adds direct audio clips plus pattern offset, mute and group metadata; readers retain versions 1–4. Audio clips reference their channel's immutable shared sample, a source offset and an anchor. Splitting retains the anchor, so resampling phase is identical across the cut. Move preserves the starting source position across tempo changes. Compatible joins never concatenate or resample source files. Pattern cuts through held notes fail explicitly while between-note cuts retain loop phase. Pattern-only export excludes audio clips.
+
+## Spectral Journey
+
+`src/spectral.rs` implements a bounded modal-fingerprint analyzer, monotone transport plan in log-frequency space and additive resynthesis. The shared editor runs analysis and the matched crossfade comparison on a cancellable worker; the callback only consumes completed audio. Results become independent audio clips through the existing transactional arrangement/history path. Sources remain immutable, insertion checks the captured session revision, and invalid/oversize inputs fail before DSP allocation. Detailed signal semantics and limits are in [SPECTRAL-JOURNEY.md](SPECTRAL-JOURNEY.md).

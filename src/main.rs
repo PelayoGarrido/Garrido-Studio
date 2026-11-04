@@ -93,6 +93,48 @@ fn run() -> Result<()> {
             );
             Ok(())
         }
+        "spectral-journey" if args.len() == 5 || args.len() == 7 => {
+            let number = |i: usize| {
+                args[i]
+                    .to_str()
+                    .and_then(|s| s.parse::<f64>().ok())
+                    .ok_or(Error::Invalid("Parámetro espectral no válido"))
+            };
+            let mut settings = garrido_studio::spectral::Settings {
+                seconds: number(4)?,
+                ..Default::default()
+            };
+            if args.len() == 7 {
+                settings.start = number(5)?;
+                settings.end = number(6)?;
+            }
+            settings.validate()?;
+            let load = |path: &Path| {
+                let bytes = storage::read_bounded(path, 24 * 1024 * 1024)?;
+                if bytes.starts_with(b"fLaC") {
+                    garrido_studio::flac::decode(&bytes)
+                } else if bytes.starts_with(b"FORM") {
+                    garrido_studio::aiff::decode(&bytes)
+                } else {
+                    wav::decode(&bytes)
+                }
+            };
+            let cancel = AtomicBool::new(false);
+            let a = garrido_studio::spectral::analyze(&load(Path::new(&args[1]))?, 24, &cancel)?;
+            let b = garrido_studio::spectral::analyze(&load(Path::new(&args[2]))?, 24, &cancel)?;
+            let result = garrido_studio::spectral::render(&a, &b, settings, &cancel)?;
+            storage::write_new(
+                Path::new(&args[3]),
+                &wav::encode(&result.frames, result.rate, wav::Depth::Pcm24, false)?,
+            )?;
+            println!(
+                "Spectral Journey · {} modos A · {} modos B · {} frames",
+                a.modes().len(),
+                b.modes().len(),
+                result.frames.len()
+            );
+            Ok(())
+        }
         "convert-audio" if args.len() == 3 => {
             let input = storage::read(Path::new(&args[1]))?;
             let sample = if input.starts_with(b"fLaC") {
@@ -189,7 +231,7 @@ fn run() -> Result<()> {
             Ok(())
         }
         _ => Err(Error::Invalid(
-            "Uso: garrido-studio [demo RUTA | render-demo WAV | render PROYECTO WAV | import-midi MIDI PROYECTO | export-midi PROYECTO MIDI | inspect PROYECTO | bench | --version]",
+            "Uso: garrido-studio [demo RUTA | render-demo WAV | render PROYECTO WAV | spectral-journey A B WAV SEGUNDOS [INICIO FIN] | import-midi MIDI PROYECTO | export-midi PROYECTO MIDI | inspect PROYECTO | bench | --version]",
         )),
     }
 }

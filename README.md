@@ -3,7 +3,7 @@
   <h1>Garrido Studio</h1>
   <p>A desktop audio workstation written in Rust.<br>Original engine, instruments, effects and audio codecs.</p>
   <p>By <strong>Pelayo Garrido Martínez</strong></p>
-  <p><a href="https://github.com/PelayoGarrido/Garrido-Studio/releases/tag/v1.1.0">Download v1.1.0</a> · <a href="https://PelayoGarrido.github.io/Garrido-Studio/">Website</a> · <a href="CONTRIBUTING.md">Contribute</a> · <a href="docs/ARCHITECTURE.md">Architecture</a></p>
+  <p><a href="https://github.com/PelayoGarrido/Garrido-Studio/releases/tag/v1.2.0">Download v1.2.0</a> · <a href="https://PelayoGarrido.github.io/Garrido-Studio/">Website</a> · <a href="CONTRIBUTING.md">Contribute</a> · <a href="docs/ARCHITECTURE.md">Architecture</a></p>
 </div>
 
 ![Garrido Studio dark workspace](assets/screenshots/workspace-garrido.jpg)
@@ -16,13 +16,25 @@ Everything runs locally. No account, subscription, model download, telemetry or 
 
 | System | Package |
 |---|---|
-| macOS 13+, Apple Silicon | [macOS arm64](https://github.com/PelayoGarrido/Garrido-Studio/releases/download/v1.1.0/Garrido-Studio-1.1.0-macOS-arm64.zip) |
-| Windows x64 | [Windows x64](https://github.com/PelayoGarrido/Garrido-Studio/releases/download/v1.1.0/Garrido-Studio-1.1.0-Windows-x64.zip) |
-| Linux x86_64, glibc 2.39 | [Linux x64](https://github.com/PelayoGarrido/Garrido-Studio/releases/download/v1.1.0/Garrido-Studio-1.1.0-Linux-x64.tar.gz) |
+| macOS 13+, Apple Silicon | [macOS arm64](https://github.com/PelayoGarrido/Garrido-Studio/releases/download/v1.2.0/Garrido-Studio-1.2.0-macOS-arm64.zip) |
+| Windows x64 | [Windows x64](https://github.com/PelayoGarrido/Garrido-Studio/releases/download/v1.2.0/Garrido-Studio-1.2.0-Windows-x64.zip) |
+| Linux x86_64, glibc 2.39 | [Linux x64](https://github.com/PelayoGarrido/Garrido-Studio/releases/download/v1.2.0/Garrido-Studio-1.2.0-Linux-x64.tar.gz) |
 
-Extract the entire package and open Garrido Studio. Keep its Resources and Plugins folders together. An example session and the license notices are included. [SHA256SUMS.txt](https://github.com/PelayoGarrido/Garrido-Studio/releases/download/v1.1.0/SHA256SUMS.txt) identifies the release files.
+Extract the entire package and open Garrido Studio. Keep its Resources and Plugins folders together. An example session and the license notices are included. [SHA256SUMS.txt](https://github.com/PelayoGarrido/Garrido-Studio/releases/download/v1.2.0/SHA256SUMS.txt) identifies the release files.
 
 Linux requires ALSA and a graphical X11/Wayland desktop. macOS uses an ad-hoc signature; Developer ID/notarization and Windows publisher signing are future distribution work. If the operating system blocks opening a package, retain the exact message rather than disabling protection.
+
+## Spectral Journey
+
+Turn two short spectral fingerprints into an evolving texture. The components move through pitch space: the midpoint of a 220 → 880 Hz route is 440 Hz. A crossfade keeps both endpoint tones.
+
+Open **Tools → Spectral Journey**, load the built-in example pair and render. Inspect the actual frequency paths, compare against a crossfade with matched overall RMS, then add a new clip with Undo or export a WAV. The FFT, fingerprint analysis, one-dimensional transport and additive synthesis are implemented in Rust here, without new registry dependencies or model downloads.
+
+![Spectral Journey frequency paths](web/public/assets/spectral-routes.svg)
+
+[Listen to the comparison](https://pelayogarrido.github.io/Garrido-Studio/#spectral) · [DSP, prior work, limits and reproduction](docs/SPECTRAL-JOURNEY.md)
+
+This is tonal resynthesis for sound design. It does not reconstruct original rhythm, speech or phase. Spectral morphing and optimal transport have established prior work; this is a new native workflow in Garrido Studio.
 
 ## Make music
 

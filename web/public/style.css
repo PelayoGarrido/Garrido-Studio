@@ -769,3 +769,18 @@ audio {
     animation:none!important
   }
 }
+
+.spectral-section { padding-block: 112px; }
+.spectral-map { display: block; width: 100%; height: auto; margin: 44px 0; border-radius: 22px; }
+.spectral-auditions { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.spectral-auditions article { padding: 28px; border: 1px solid var(--line); border-radius: 18px; }
+.spectral-auditions h3 { margin: 18px 0 12px; font-size: clamp(24px, 3vw, 36px); letter-spacing: -.04em; }
+.spectral-auditions p { line-height: 1.6; }
+.spectral-auditions audio { display: block; width: 100%; margin-top: 22px; }
+.spectral-caption { max-width: 850px; font-size: 14px; line-height: 1.7; color: var(--soft); margin-block: 24px; }
+.spectral-links { display: flex; gap: 24px; justify-content: space-between; flex-wrap: wrap; line-height: 1.7; }
+@media (max-width: 700px) { .spectral-section { padding-block: 72px; } .spectral-auditions { grid-template-columns: 1fr; } }
+
+.spectral-section .section-intro { display: grid; grid-template-columns: 1.35fr 1fr; gap: 60px; }
+.spectral-section .section-intro h2 { min-width: 0; }
+@media (max-width: 900px) { .spectral-section .section-intro { grid-template-columns: 1fr; gap: 24px; } }

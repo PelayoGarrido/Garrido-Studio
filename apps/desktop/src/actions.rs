@@ -18,6 +18,7 @@ impl Studio {
             return;
         }
         match tag {
+            9400 => self.open_journey(),
             9010 => {
                 if self.may_leave() {
                     self.stop();

@@ -2,6 +2,20 @@
 
 This ledger retains historical checks and records the v1 release scope separately from full reference parity. Current capabilities and further work are in README.md, CONTRIBUTING.md and PARITY.md. Historical failures and earlier executable hashes remain attached to their original evidence.
 
+## Spectral Journey 1.2 · 2026-11-04
+
+Local checks pass **135 core/plugin tests**, **35 optimized common-desktop tests**, strict Clippy/formatting and sixteen Python security/publication checks. No registry package versions or checksums changed. Only owned Garrido package versions and the lock inventory fingerprint changed. The latest native preview diagnostic passes all fourteen included plugins without opening sound devices.
+
+The new DSP regressions cover a direct-DFT FFT reference, spectral mass/order, a 220/880 Hz input pair producing a 440 Hz fixed midpoint, deterministic synthesis, stereo energy movement, matched comparison RMS, invalid/oversize parameters, silence/DC, output bandwidth and cancellation. Editor checks cover a new independent audio clip, transactional undo, native session encoding and stale-revision refusal. The arrangement count now includes direct audio clips.
+
+The actual Mac application opened Tools → Spectral Journey, loaded the generated pair, rendered, exported a new WAV, inserted a clip, saved a session copy and undid insertion. Its initial preview executable was `9b1ee520c72bcee82a0ac87f581956a18c3f0c8677b4ab569e08d69508eb721b`. The 288,000-frame / 48 kHz native WAV differs from the reproducible PCM24 demo by at most one integer step, consistent with the UI export's enabled dither. A later layout revision enlarges the dialog and provides independent session-channel source pickers; the DSP is unchanged. The final local preview is `54c6165758ba524271cb4d64f86ec654396b3e95dcb2f953077263a0b74de620`; its rendered dialog and fourteen packaged descriptors were checked. No microphone or audible playback was opened during these checks.
+
+One optimized M1 fixture run analyzed the generated sources in 0.012043 s and rendered the six-second journey plus its matched comparison in 0.084624 s. It used seven transport routes. The respective RMS values were 0.091269407 and 0.091269404. These are measurements of this small fixture, not a worst-case benchmark or listening acceptance. The actual PCM demos and measured-route SVG are supplied on the product site. Local browser checks found no horizontal overflow at 390 px or 1680 px, and all audio remained paused with autoplay disabled.
+
+Space safeguards stopped intermediate commands when free space dropped below their start threshold. Unused installer downloads were removed after checking they were not in use. The official simctl operation removed only the inactive iOS 18.3 derived dyld cache; both installed runtimes and the booted iOS 26.2 device were verified intact. APFS recovery was measured after deletion settled. No protected runtime source, music, project, credential or installed application was removed. Build and packaging logs remain under outputs/spectral-*.
+
+The release and Pages workflows require fresh native checks and matching published asset/source identities. Their remote results are recorded separately after publication. Physical recording-device and long-session musical acceptance remain separate.
+
 ## Workspace identity and website · 2026-11-03
 
 The 1.1.0 local checks pass **129 core/plugin tests**, **33 optimized common-desktop tests**, sixteen Python security/publication checks, formatting and strict Clippy. Registry package versions and checksums are unchanged from the corrected 1.0.0 release; only owned package versions and the associated inventory fingerprint changed. The first/last step and undo regression exercises the wider sequencer through actual pointer coordinates.

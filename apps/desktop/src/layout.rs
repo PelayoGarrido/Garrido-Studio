@@ -299,7 +299,7 @@ impl Studio {
             &format!(
                 "{} bars · {} clips",
                 self.history.project.bars,
-                self.history.project.clips.len()
+                self.history.project.clips.len() + self.history.project.audio_clips.len()
             ),
             490.,
             85.,

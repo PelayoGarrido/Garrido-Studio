@@ -381,6 +381,7 @@ impl Studio {
                 ("Swing", 33),
             ],
             _ => vec![
+                ("Spectral Journey…", 9400),
                 ("Included instruments and effects", 77),
                 ("Open plugin…", 71),
                 ("Record input", 70),

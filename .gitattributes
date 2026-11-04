@@ -2,3 +2,4 @@
 assets/** -text
 fixtures/** -text
 legal/** -text
+web/public/assets/*.wav -text

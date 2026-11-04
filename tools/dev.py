@@ -161,7 +161,7 @@ def bundle():
     info = {
         "CFBundleName": "Garrido Studio", "CFBundleDisplayName": "Garrido Studio",
         "CFBundleExecutable": "garrido-studio", "CFBundleIdentifier": "studio.garrido.GarridoStudio",
-        "CFBundlePackageType": "APPL", "CFBundleShortVersionString": "1.1.0", "CFBundleVersion": "1",
+        "CFBundlePackageType": "APPL", "CFBundleShortVersionString": "1.2.0", "CFBundleVersion": "1",
         "CFBundleIconFile": "Garrido.icns", "LSMinimumSystemVersion": "13.0",
         "LSApplicationCategoryType": "public.app-category.music", "NSHighResolutionCapable": True,
         "NSHumanReadableCopyright": "Copyright © 2026 Pelayo Garrido Martínez",

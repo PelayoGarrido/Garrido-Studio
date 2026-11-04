@@ -11,6 +11,7 @@ struct Menu {
 
 #[derive(Default)]
 pub(crate) struct Dialogs {
+    pub(crate) spectral: RefCell<Option<crate::spectral_ui::JourneyDialog>>,
     pub(crate) history: Cell<bool>,
     pub(crate) audio: RefCell<Option<crate::audio_settings::AudioDialog>>,
     form: RefCell<Option<Form>>,
@@ -29,7 +30,8 @@ struct Form {
 }
 impl Dialogs {
     pub(crate) fn active(&self) -> bool {
-        self.history.get()
+        self.spectral.borrow().is_some()
+            || self.history.get()
             || self.audio.borrow().is_some()
             || self.export.borrow().is_some()
             || self.form.borrow().is_some()
@@ -104,6 +106,7 @@ impl Studio {
         })
     }
     pub(crate) fn draw_dialogs(&mut self) {
+        self.draw_journey();
         self.draw_history();
         self.draw_audio_settings();
         self.draw_export();

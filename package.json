@@ -1,7 +1,7 @@
 {
   "name": "garrido-studio-workspace",
   "private": true,
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Development commands only. The application is written in Rust.",
   "scripts": {
     "source:archive": "python3 tools/source_archive.py",
@@ -42,7 +42,8 @@
     "release:bundle": "python3 tools/release_bundle.py",
     "release:publish": "python3 tools/publish_release.py",
     "web:check": "python3 tools/web_check.py",
-    "web:dev": "pnpm --dir web dev"
+    "web:dev": "pnpm --dir web dev",
+    "spectral:demo": "python3 tools/spectral_demo.py"
   },
   "packageManager": "pnpm@10.14.0"
 }

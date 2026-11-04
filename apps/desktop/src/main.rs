@@ -19,6 +19,7 @@ mod menus;
 mod plugin_host;
 mod preferences_ui;
 mod session;
+mod spectral_ui;
 mod stems;
 mod streaming;
 mod workspace;

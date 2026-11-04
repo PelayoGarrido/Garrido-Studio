@@ -1,5 +1,5 @@
 {
-  "lock_sha256": "50a1ad088bef3fd1a6d480c19d085d7fcd78f44e1522d246e238aa0351611e8f",
+  "lock_sha256": "8c54e3a4ec8802e44665e69f0fa66b8cb5c2ba1c49436c08fe7fd518a04648ea",
   "packages": [
     {
       "name": "accesskit",

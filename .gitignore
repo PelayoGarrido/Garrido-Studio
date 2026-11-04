@@ -26,3 +26,6 @@ __pycache__/
 *.p12
 *.pfx
 .garrido-*.tmp
+
+!/web/public/assets/spectral-journey.wav
+!/web/public/assets/spectral-crossfade.wav

@@ -377,6 +377,43 @@ mod tests {
     fn studio() -> Studio {
         Studio::from_context(egui::Context::default(), None).expect("sesión inicial válida")
     }
+    #[test]
+    fn spectral_result_is_an_independent_clip_with_atomic_undo_and_save() {
+        let mut s = studio();
+        let original = s.history.project.clone();
+        let sample = garrido_studio::spectral::example_sources()[0].clone();
+        let revision = s.revision;
+        s.insert_journey(sample.clone(), revision, BAR, 2).unwrap();
+        assert_eq!(s.history.project.tracks.len(), original.tracks.len() + 1);
+        assert_eq!(
+            s.history.project.audio_clips.len(),
+            original.audio_clips.len() + 1
+        );
+        assert_eq!(s.history.project.audio_clips.last().unwrap().tick, BAR);
+        assert_eq!(s.history.project.audio_clips.last().unwrap().track, 2);
+        assert_eq!(
+            s.history.project.tracks.last().unwrap().sample.as_ref(),
+            Some(&sample)
+        );
+        let bytes = codec::encode(&s.history.project).unwrap();
+        assert_eq!(codec::decode(&bytes).unwrap(), s.history.project);
+        assert!(s.history.undo());
+        assert_eq!(s.history.project, original);
+        let before = s.history.project.clone();
+        assert!(s.insert_journey(sample, revision, 0, 0).is_err());
+        assert_eq!(s.history.project, before);
+    }
+
+    #[test]
+    fn spectral_dialog_blocks_canvas_and_never_starts_audio_on_open() {
+        let mut s = studio();
+        s.action(9400);
+        assert!(s.dialogs.active());
+        assert!(s.playback.is_none());
+        assert!(s.capture.is_none());
+        frame(&mut s, vec![]);
+        assert!(s.dialogs.spectral.borrow().is_some());
+    }
     fn frame(studio: &mut Studio, mut events: Vec<Event>) {
         let modifiers = events
             .iter()

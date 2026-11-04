@@ -31,3 +31,11 @@ document.addEventListener("visibilitychange", () => {
     for (const audio of document.querySelectorAll("audio")) audio.pause();
   }
 });
+
+for (const audio of document.querySelectorAll("audio")) {
+  audio.addEventListener("play", () => {
+    for (const other of document.querySelectorAll("audio")) {
+      if (other !== audio) other.pause();
+    }
+  });
+}

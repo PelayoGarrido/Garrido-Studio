@@ -18,6 +18,7 @@ pub mod preferences;
 pub mod recording;
 pub mod recovery;
 pub mod routing;
+pub mod spectral;
 pub mod stems;
 pub mod storage;
 pub mod stream;
